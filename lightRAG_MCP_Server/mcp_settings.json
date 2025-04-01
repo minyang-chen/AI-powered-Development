@@ -1,0 +1,23 @@
+{
+    "mcpServers": {
+      "lightrag-server": {
+        "command": "/mcp_server/.venv/bin/python",
+        "args": [
+          "/mcp_server/lightrag_mcp_server.py"
+        ],
+        "cwd": "/mcp_server",
+        "env": {
+          "LIGHTRAG_LLM_PROVIDER": "ollama",
+          "LIGHTRAG_MODEL_NAME": "llama3.2",
+          "LIGHTRAG_EMBEDDING_PROVIDER": "ollama",
+          "LIGHTRAG_EMBEDDING_MODEL_NAME": "nomic-embed-text",
+          "LIGHTRAG_DATA_PATH": "/mcp_server/book_small.txt",
+          "LIGHTRAG_WORKING_DIR": "./lightrag_mcp_data",
+          "LIGHTRAG_OLLAMA_BASE_URL": "http://localhost:11434"
+        },
+        "timeout": 15,
+        "disabled": false,
+        "alwaysAllow": []
+      }
+    }
+  }
