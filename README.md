@@ -2,7 +2,7 @@
 Projects develop using autonomous coding agent workflow
 
 # Workflow
-
+![Smart AI Development Workflow](smart_development_workflow_with_Autonomous_coding_agent.png "Smart AI Development Workflow")
 
 
 # Projects
