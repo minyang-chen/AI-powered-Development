@@ -7,13 +7,13 @@ Projects develop using autonomous coding agent workflow
 
 # Projects
 
-## LightRAG MCP Server 
+## 1. LightRAG MCP Server (completed)
 [LightRAG MCP Server](lightRAG_MCP_Server)
 ### Toolsets
 VS Code + Roo Code + Gemini 2.5 Pro
 
 
-## OpenAI Agent UI Application
+## 2. OpenAI Agent-SDK UI Web App (pending)
 
 
 
