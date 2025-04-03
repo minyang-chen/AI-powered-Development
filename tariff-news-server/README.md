@@ -122,3 +122,31 @@ Create a Python-based MCP server that provides a tool to search for recent news 
 *   Example MCP Servers: [https://github.com/modelcontextprotocol/python-sdk/tree/main/examples/servers](https://github.com/modelcontextprotocol/python-sdk/tree/main/examples/servers) (Specifically, `simple-tool` provides a relevant pattern).
 
 ---
+
+
+## Solution Diagram
+
+I have generated a Mermaid sequence diagram illustrating the solution architecture for the Tariff News MCP Server. The diagram shows the interaction between the user, the MCP client, the MCP runner, the Python server process, the DuckDuckGo search library, and the external DuckDuckGo service to fulfill a tool request.
+```mermaid
+sequenceDiagram
+    participant User/AI Agent
+    participant MCP Client (Roo-Cline)
+    participant MCP Runner
+    participant Tariff News Server (Python Process)
+    participant DuckDuckGo Search Library
+    participant DuckDuckGo News Service
+
+    User/AI Agent->>+MCP Client (Roo-Cline): use_mcp_tool(server='tariff-news-server', tool='get_tariff_reaction_news', args={...})
+    MCP Client (Roo-Cline)->>+MCP Runner: Forward MCP Request
+    Note over MCP Runner, Tariff News Server (Python Process): Communication via Stdio (using `python -m tariff_news_server.server`)
+    MCP Runner->>+Tariff News Server (Python Process): CallToolRequest (get_tariff_reaction_news)
+    Tariff News Server (Python Process)->>Tariff News Server (Python Process): Validate input, call tool function
+    Tariff News Server (Python Process)->>+DuckDuckGo Search Library: ddgs.news(query, timelimit='w', ...)
+    DuckDuckGo Search Library->>+DuckDuckGo News Service: HTTP Search Request
+    DuckDuckGo News Service-->>-DuckDuckGo Search Library: Search Results
+    DuckDuckGo Search Library-->>-Tariff News Server (Python Process): Return results list
+    Tariff News Server (Python Process)->>Tariff News Server (Python Process): Process results, format as TextContent
+    Tariff News Server (Python Process)-->>-MCP Runner: CallToolResponse (TextContent with JSON results)
+    MCP Runner-->>-MCP Client (Roo-Cline): Forward MCP Response
+    MCP Client (Roo-Cline)-->>-User/AI Agent: Display Results
+```
