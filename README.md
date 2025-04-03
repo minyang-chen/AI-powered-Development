@@ -11,11 +11,15 @@ Projects develop using autonomous coding agent workflow
 [LightRAG MCP Server](lightRAG_MCP_Server)
 ### Toolsets
 VS Code + Roo Code + Gemini 2.5 Pro
+### Project Prompt
+[Project Prompt](lightRAG_MCP_Server/project_prompt.md)
 
 ## 2. Tariff News MCP Server
 [Tarrif News MCP Server](tariff-news-server)
 ### Toolsets
 VS Code + Roo Code + Gemini 2.5 Pro
+### Project Prompt
+[Project Prompt](tariff-news-server/project_prompt.md)
 
 
 ## 3. OpenAI Agent-SDK UI Web App (pending)
