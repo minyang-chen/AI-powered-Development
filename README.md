@@ -12,8 +12,17 @@ Projects develop using autonomous coding agent workflow
 ### Toolsets
 VS Code + Roo Code + Gemini 2.5 Pro
 
+## 2. Tariff News MCP Server
+[Tarrif News MCP Server](tariff-news-server)
+### Toolsets
+VS Code + Roo Code + Gemini 2.5 Pro
 
-## 2. OpenAI Agent-SDK UI Web App (pending)
+
+## 3. OpenAI Agent-SDK UI Web App (pending)
+
+
+
+
 
 
 

@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tariff-news-mcp-server"
+version = "0.1.0"
+authors = [
+  { name="Roo Code Assistant", email="roo@example.com" },
+]
+description = "An MCP server to search for news about international reactions to US tariffs."
+readme = "README.md" # Optional: Add a README later if needed
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License", # Assuming MIT, adjust if needed
+    "Operating System :: OS Independent",
+    # Removed FastAPI classifier
+    "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+]
+# Dependencies are listed here. Alternatively, could read from requirements.txt
+# during build, but listing explicitly is often clearer for packaging.
+dependencies = [
+    "mcp[cli]>=1.6.0", # Use the correct package name and version
+    "duckduckgo-search>=2025.4.1", # Use a specific version or range
+    "starlette>=0.27", # Added for SSE transport
+    "uvicorn[standard]>=0.23", # Added for running Starlette
+    "click>=8.0", # Added for CLI argument parsing
+    "pydantic>=2.11",
+    "requests>=2.25", # Added as it's a common dependency, though not directly used in provided code
+    "anyio>=4.0", # Added for running the async main function
+]
+
+[project.urls]
+"Homepage" = "https://github.com/example/tariff-news-server" # Placeholder URL
+"Bug Tracker" = "https://github.com/example/tariff-news-server/issues" # Placeholder URL
+
+# Define where the package source code is located
+[tool.setuptools.packages.find]
+where = ["src"]  # look for packages in the src directory
+
+# Define console script entry points
+[project.scripts]
+tariff-news-server = "tariff_news_server.server:main_cli" # Point to the main CLI function
