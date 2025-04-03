@@ -121,6 +121,10 @@ Create a Python-based MCP server that provides a tool to search for recent news 
 *   Python MCP SDK (`mcp` package): [https://github.com/modelcontextprotocol/python-sdk](https://github.com/modelcontextprotocol/python-sdk)
 *   Example MCP Servers: [https://github.com/modelcontextprotocol/python-sdk/tree/main/examples/servers](https://github.com/modelcontextprotocol/python-sdk/tree/main/examples/servers) (Specifically, `simple-tool` provides a relevant pattern).
 
+**4. Documentation:**
+- generate a soluton diagram for tariff news MCP server
+- generate documentation for source code
+
 ---
 
 
