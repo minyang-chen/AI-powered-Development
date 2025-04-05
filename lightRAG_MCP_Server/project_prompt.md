@@ -1,5 +1,3 @@
-Reference: https://www.aivi.fyi/aiagents/using-WindSurf-to-Create-MCP-Server-for-LightRAG
-
 # Requirements for LighRAG MCP Server
 
 I want to develop a Build an MCP server for the LightRAG.
