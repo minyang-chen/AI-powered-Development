@@ -22,7 +22,15 @@ VS Code + Roo Code + Gemini 2.5 Pro
 [Project Prompt](tariff-news-server/project_prompt.md)
 
 
-## 3. OpenAI Agent-SDK UI Web App (pending)
+## 3. Unique Unique Code Generator
+[Random Unique Code generator](tariff-news-server)
+### Toolsets
+VS Code + Roo Code + Gemini 2.5 Pro
+### Project Prompt
+[Project Prompt](referral_app/project_prompt.md)
+
+
+## 4. OpenAI Agent-SDK UI Web App (pending)
 
 
 

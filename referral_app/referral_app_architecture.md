@@ -6,7 +6,9 @@ This diagram shows the basic components and flow of the Referral Code Generator 
 graph TD
     subgraph "User's Browser"
         direction LR
-        User[User] <--> ReactApp[React Frontend (Vite + TS)]
+        User[User]
+        ReactApp[React Frontend (Vite + TS)]
+        User <--> ReactApp
     end
 
     subgraph "React Frontend Components"
