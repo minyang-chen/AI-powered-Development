@@ -22,7 +22,7 @@ VS Code + Roo Code + Gemini 2.5 Pro
 [Project Prompt](tariff-news-server/project_prompt.md)
 
 ## 3. Unique Unique Code Generator (completed)
-[Random Unique Code generator](tariff-news-server)
+[Random Unique Code generator](referral_app)
 ### Toolsets
 VS Code + Roo Code + Gemini 2.5 Pro
 ### Project Prompt
