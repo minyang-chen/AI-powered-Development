@@ -22,7 +22,7 @@ VS Code + Roo Code + Gemini 2.5 Pro
 [Project Prompt](tariff-news-server/project_prompt.md)
 
 ## 3. Referral Code Generator (completed)
-[Random Unique Code generator](referral_app)
+[Referral Code generator](referral_app)
 ### Toolsets
 VS Code + Roo Code + Gemini 2.5 Pro
 ### Project Prompt
