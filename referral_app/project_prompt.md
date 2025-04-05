@@ -1,90 +1,140 @@
+**Optimized Requirements Prompt for Referral App Code Generation (v3)**
 
-**Prompt for Frontend Development Task:**
+**1. Project Goal:**
+Develop a single-page React application using Vite and TypeScript for generating and managing referral codes. The application should feature distinct sections for code generation, viewing records, viewing API documentation, and viewing usage statistics. Styling should be implemented using Tailwind CSS.
 
-**Objective:** Implement the frontend for a Referral Code Generation web application using React and TypeScript.
+**2. Technology Stack:**
+*   Frontend Framework: React with TypeScript
+*   Build Tool: Vite
+*   Styling: Tailwind CSS
+*   Routing: Client-side routing library (e.g., `react-router-dom`)
+*   Form Handling: Form management library (e.g., `react-hook-form`)
+*   Data Fetching: HTTP client library (e.g., `axios`)
+*   Charting: JavaScript charting library (e.g., `recharts`) - Assume it will be installed.
+*   API Simulation: Custom Vite plugin (Node.js `http`, `fs`, `path`)
 
-**Core Requirements:**
+**3. Core Features & UI:**
 
-1.  **Referral Registration Page:**
-    *   Create a single-page React application.
-    *   Implement a form component (`ReferralForm.tsx`).
-    *   The form should collect the following user information:
-        *   Company Name (text input, required)
-        *   Industry (dropdown/select, optional - provide a few sample options like 'Technology', 'Finance', 'Retail', 'Other')
-        *   Contact Name (text input, required)
-        *   Contact Email (email input, required, basic format validation desirable)
-        *   Contact Phone (tel input, optional)
-    *   Include a "Submit" button.
+*   **Overall Layout:**
+    *   A consistent header should appear on all pages, displaying a small application logo (`/vite.svg`) followed by the title "Referral Code Generator", centered horizontally.
+    *   A primary navigation bar should appear below the header, centered horizontally, with links: "Generate Code", "View Records", "API Docs", "Statistics". The active link should be visually distinct.
+    *   A main content area below the navigation where page-specific content is rendered.
+    *   A simple footer with copyright information.
+*   **Generate Code Page:**
+    *   Display clear instructions for using the form.
+    *   Include a form for submitting referral details.
+    *   Show loading indicators during form submission.
+    *   Upon successful submission:
+        *   Display the generated referral code prominently.
+        *   Show instructions for using the code (dynamically including any discount).
+        *   Provide an interface to input comma-separated email addresses and a "Send Email" button to trigger sending the code/instructions (via simulated API). Display success/error messages for the email action.
+        *   Include a "Generate Another Code" button to clear the success message and reset the form.
+    *   Display clear error messages if form submission fails.
+*   **Referral Form Component:**
+    *   Collect the following information:
+        *   Company Name (Required)
+        *   Industry (Optional, Dropdown with predefined options: Technology, Finance, Retail, Healthcare, Education, Other)
+        *   Contact Name (Required)
+        *   Contact Email (Required, Validated format)
+        *   Contact Phone (Optional)
+        *   Discount Percentage (Optional, Numeric input, validated 0-100)
+        *   Event Description (Optional, Multi-line text input)
+    *   Perform client-side validation for required fields and formats, displaying clear error messages near the relevant fields.
+    *   Include a "Generate Code" submit button, styled distinctively (e.g., blue) and disabled while submitting. Make the button visually larger than default form buttons.
+    *   **Layout:** The form should be centered horizontally, occupying approximately 80% of its container's width. Ensure adequate vertical spacing between form fields and labels. Add extra vertical space before the submit button. Style labels clearly (e.g., gray text).
+*   **View Records Page:**
+    *   Display the title "Generated Referral Records" (use a slightly smaller font size than the main app title).
+    *   Include a search section with an input field for entering a referral code and a "Find" button. Ensure adequate vertical space below this section.
+    *   Implement client-side search logic: when "Find" is clicked, search through all fetched records for a matching code (case-insensitive).
+    *   **Display Logic:**
+        *   If loading data, show a "Loading..." message.
+        *   If an error occurs during data fetch, show an error message.
+        *   If a search is performed and a record is found, display the full details of that single record clearly. Include a button to "Show All Records" (clears the search).
+        *   If a search is performed and no record is found, display a "Record not found" message.
+        *   If no search is active and records exist, display a paginated table of all records.
+        *   If no records exist (and no search is active), display a "No records found" message.
+    *   **Paginated Table:**
+        *   Display 10 records per page.
+        *   Include columns for: Company Name, Date Created, Referral Code, Contact Name, Contact Email, Discount (%), Industry, Contact Phone, Event Description.
+        *   Make column headers clickable to sort the displayed data (client-side sorting, ascending/descending). Indicate the currently sorted column and direction visually.
+        *   Provide "Previous" and "Next" buttons for pagination, disabling them appropriately. Display the current range of records being shown (e.g., "Showing 1-10 of 50 results").
+*   **API Documentation Page:**
+    *   Page Title: "API Docs".
+    *   Provide clear documentation for each simulated API endpoint.
+    *   For each endpoint, include: Method (GET/POST), Path, Description, Request Payload details (if applicable, listing parameters, types, required/optional), Success Response details, Error Response details, and a `curl` command example.
+    *   Use code formatting and bolding for parameter/field names to improve readability. Ensure good spacing between documentation sections.
+*   **Statistics Page:**
+    *   Page Title: "Usage Statistics".
+    *   Fetch pre-calculated statistics data from the corresponding API endpoint.
+    *   Display loading/error/no data states appropriately.
+    *   Display the following charts using a charting library (e.g., `recharts`):
+        *   **Codes Generated (Daily):** A Bar Chart showing daily counts over time. Use fixed dimensions.
+        *   **Top Companies:** A Pie Chart showing the distribution of codes generated by the top 10 companies. Use fixed dimensions and unique colors for each slice.
+        *   **Popular Attributes:** Three separate vertical Bar Charts showing the top 10 most frequent Industries, Event Descriptions, and Discount Percentages. Use responsive containers with dynamic height.
 
-2.  **Form Submission & API Interaction:**
-    *   On form submission:
-        *   Perform basic client-side validation to ensure required fields are filled.
-        *   If valid, send the form data as a JSON payload via a POST request to a placeholder backend endpoint: `/api/referrals`.
-        *   **Request Body Example:**
-            ```json
-            {
-              "companyName": "Example Corp",
-              "industry": "Technology",
-              "contactName": "Jane Doe",
-              "contactEmail": "jane.doe@example.com",
-              "contactPhone": "123-456-7890"
-            }
-            ```
-    *   **Backend Interaction (Simulated):** Assume the backend (`/api/referrals`) will:
-        *   Return a `200 OK` status with a JSON body upon successful validation and code generation.
-            *   **Success Response Example:**
-                ```json
-                {
-                  "referralCode": "REF-XYZ123ABC",
-                  "instructions": "Share this code with new subscribers. They will receive a 10% discount on their first month when using this code during signup."
-                }
-                ```
-        *   Return a non-200 status (e.g., `400 Bad Request`) with an error message if validation fails or another issue occurs.
-            *   **Error Response Example:**
-                ```json
-                {
-                  "error": "Invalid email format."
-                }
-                ```
+**4. API Simulation (Development Only):**
 
-3.  **Display Results:**
-    *   After a successful submission (200 OK response):
-        *   Hide or clear the form.
-        *   Display the received `referralCode` and `instructions` clearly to the user.
-    *   If an error occurs during submission (non-200 response):
-        *   Display the error message received from the backend near the form or submit button.
-        *   Keep the form populated so the user can correct errors.
+*   Implement using **custom Vite plugin middleware**.
+*   **Persistence:** Simulate data persistence by reading from and writing to a local `records.json` file. Handle file loading errors gracefully.
+*   **Simulated Endpoints:**
+    *   `GET /api/records`: Return all stored `ReferralRecord` objects.
+    *   `POST /api/referrals`: Validate input, generate code/ID/timestamp/instructions (incorporating discount), store the new `ReferralRecord` (including all form fields) in memory and save to `records.json`, return success response.
+    *   `POST /api/sendemail`: Accept payload, log a simulation message to the console, return success message.
+    *   `GET /api/statistics`: Read the current records, calculate aggregate data (time series counts, top company counts, attribute popularity counts, total records), return `StatisticsResponse`.
+    *   `GET /api/export/records`: Read current records, format as CSV (excluding `instructions`), set download headers, return CSV content.
 
-**Technology Stack:**
+**5. Data Structures (Types):**
 
-*   **Framework/Library:** React (v18+)
-*   **Language:** TypeScript
-*   **Build Tool/Environment:** Vite
-*   **Form Management:** React Hook Form
-*   **API Client:** Axios or native `fetch`
-*   **UI Styling:** Use Tailwind CSS for styling components. Ensure a clean, professional look and basic responsiveness.
-*   **(Optional) State Management:** Use Zustand if global state becomes necessary beyond form state, otherwise component state is sufficient.
-*   **(Optional) Routing:** Use React Router if you foresee needing multiple pages later, but for now, a single page in `App.tsx` is acceptable.
+Define clear TypeScript interfaces for the following data structures:
 
-**Project Structure:**
-*   Create a folder name "referral_app" for the project
-*   Organize code logically within the `src` directory. Suggested structure:
-    *   `src/App.tsx` (Main application component, routing if used)
-    *   `src/components/ReferralForm.tsx` (The main form component)
-    *   `src/services/api.ts` (Function(s) for interacting with the backend API)
-    *   `src/types/index.ts` (TypeScript type definitions, e.g., for form data, API responses)
+*   **`ReferralFormData`** (Data submitted from the form):
+    *   `companyName`: `string` (Required)
+    *   `industry?`: `string` (Optional)
+    *   `contactName`: `string` (Required)
+    *   `contactEmail`: `string` (Required)
+    *   `contactPhone?`: `string` (Optional)
+    *   `discountPercentage?`: `number` (Optional)
+    *   `eventDescription?`: `string` (Optional)
 
-**Quality Attributes:**
+*   **`ReferralRecord`** (Structure of a stored/retrieved record):
+    *   `id`: `string` (Required, Unique identifier generated by the backend simulation)
+    *   `createdAt`: `string` (Required, ISO 8601 timestamp string generated by the backend simulation)
+    *   `referralCode`: `string` (Required, Generated code)
+    *   `companyName`: `string` (Required)
+    *   `industry?`: `string` (Optional)
+    *   `contactName`: `string` (Required)
+    *   `contactEmail`: `string` (Required)
+    *   `contactPhone?`: `string` (Optional)
+    *   `discountPercentage?`: `number` (Optional)
+    *   `eventDescription?`: `string` (Optional)
 
-*   Write clean, readable, and well-commented TypeScript code.
-*   Implement basic error handling for the API request (e.g., network errors, backend errors).
-*   Ensure required form fields have appropriate validation messages.
+*   **`ReferralSuccessResponse`** (Response on successful code generation):
+    *   `referralCode`: `string`
+    *   `instructions`: `string` (Dynamically generated instructions including discount)
 
-**Exclusions:**
+*   **`ReferralErrorResponse`** (Common structure for API errors):
+    *   `error`: `string` (Description of the error)
 
-*   Do not implement the backend API logic (`/api/referrals`). Assume it exists and behaves as described.
-*   No user authentication or session management is required for this task.
-*   The advanced visual workflow features (canvas, drag/drop) are **not** part of this task.
+*   **`SendEmailPayload`** (Data sent to the email simulation endpoint):
+    *   `referralCode`: `string` (Required)
+    *   `instructions`: `string` (Required)
+    *   `companyName`: `string` (Required)
+    *   `emails`: `string[]` (Required, Array of email addresses)
 
-**Deliverable:** A functional React/TypeScript frontend application fulfilling the requirements above, ready to interact with the specified (placeholder) backend endpoint.
+*   **`SendEmailResponse`** (Response from the email simulation endpoint):
+    *   `message`: `string` (Confirmation message)
 
+*   **`ChartDataPoint`** (Generic structure for bar/pie chart data):
+    *   `name`: `string` (Label for the data point, e.g., company name, industry)
+    *   `count`: `number` (Value for the data point)
+
+*   **`TimeSeriesData`** (Structure for time series counts):
+    *   `Record<string, number>` (Object where keys are date/week/month strings and values are counts)
+
+*   **`StatisticsResponse`** (Response from the statistics endpoint):
+    *   `timeSeries`: `{ daily: TimeSeriesData; weekly: TimeSeriesData; monthly: TimeSeriesData; }`
+    *   `topCompanies`: `ChartDataPoint[]` (Array of top 10 companies)
+    *   `popularity`: `{ industries: ChartDataPoint[]; events: ChartDataPoint[]; discounts: ChartDataPoint[]; }` (Arrays for top 10 popular attributes)
+    *   `totalRecords`: `number`
+
+---

@@ -2,6 +2,9 @@
 
 This is a simple React application built with Vite and TypeScript that allows users to input company and contact details to generate a referral code via an API call.
 
+## Design
+![Referral Code Generator Design](referral_code_solution_diagram.png "design")
+
 ## Features
 
 *   Form for submitting referral information (Company Name, Industry, Contact Name, Email, Phone).
@@ -57,6 +60,20 @@ pnpm dev
 ```
 
 This will typically start the application on `http://localhost:5173` (or the next available port). Open this URL in your web browser to view the application. The server supports Hot Module Replacement (HMR), so changes you make to the code should reflect automatically in the browser without a full page reload.
+
+## API Documentation
+
+This application uses a simulated backend API during development. Documentation for the available API endpoints (including request/response formats and examples) can be found within the running application itself:
+
+1.  Start the development server (`npm run dev`).
+2.  Navigate to the **API Docs** tab in the application's UI (usually at `http://localhost:5173/apiusage`).
+
+The available endpoints are:
+*   `POST /api/referrals`: Generate a new referral code.
+*   `GET /api/records`: Retrieve all generated records.
+*   `POST /api/sendemail`: Simulate sending a code via email.
+*   `GET /api/statistics`: Retrieve calculated usage statistics.
+*   `GET /api/export/records`: Download all records as a CSV file.
 
 ## Building for Production (Optional)
 

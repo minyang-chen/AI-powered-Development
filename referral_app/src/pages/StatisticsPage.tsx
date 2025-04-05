@@ -2,9 +2,12 @@ import React, { useState, useEffect, useMemo } from 'react'; // Remove memo impo
 import { getStatistics } from '../services/api'; // Import getStatistics
 import type { StatisticsResponse, TimeSeriesData } from '../types'; // Import StatisticsResponse and TimeSeriesData
 // Import Recharts components (assuming library will be installed)
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts'; // Added BarChart components
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell } from 'recharts'; // Added PieChart components
 
 // Removed StringCountMap type as processing is moved to backend simulation
+
+// Define some colors for the Pie Chart slices
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#d0ed57', '#a4de6c'];
 
 const StatisticsPage: React.FC = () => {
   console.log(">>> StatisticsPage COMPONENT BODY EXECUTING"); // Log component execution
@@ -51,8 +54,9 @@ const StatisticsPage: React.FC = () => {
 
   // Chart data processing logic removed - now handled by backend simulation
 
+  // Faulty log removed
 
-  return (
+  return ( // Keep only one return
     <div className="w-full max-w-6xl mx-auto p-6 bg-white shadow-lg rounded-xl">
       <h2 className="text-2xl font-semibold text-gray-800 mb-6">Usage Statistics</h2>
 
@@ -67,26 +71,49 @@ const StatisticsPage: React.FC = () => {
       {/* --- Charts Section (Moved from RecordsView) --- */}
       {/* Update condition and use statsData */}
       {!loading && !error && statsData && statsData.totalRecords > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6"> {/* Changed back to 3 cols */}
           {/* Chart 1: Time Series Bar Chart */}
           <div className="p-4 border rounded shadow-sm bg-gray-50">
             <h4 className="text-lg font-semibold mb-2 text-center text-gray-700">Codes Generated (Daily)</h4>
             {/* Recharts Container */}
-            <div className="h-64 w-full">
-              {/* Ensure only BarChart is direct child */}
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={formattedTimeSeriesData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
-                  <XAxis dataKey="date" fontSize={10} scale="band" /> {/* Restored scale */}
-                  <YAxis allowDecimals={false} fontSize={10} type="number" /> {/* Restored type */}
-                  <Tooltip wrapperStyle={{ fontSize: '12px' }} />
-                  <Legend wrapperStyle={{ fontSize: '12px' }} />
-                  <Bar dataKey="count" fill="#8884d8" name="Codes Generated" />
-                </BarChart>
-              </ResponsiveContainer>
+            {/* Reverted to fixed dimensions due to ResponsiveContainer issues */}
+            <div className="w-full flex justify-center"> {/* Center the fixed-size chart */}
+               <BarChart width={500} height={250} data={formattedTimeSeriesData}> {/* Fixed dimensions */}
+                 <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
+                 <XAxis dataKey="date" fontSize={10} type="category" />
+                 <YAxis allowDecimals={false} fontSize={10} type="number" />
+                 <Tooltip wrapperStyle={{ fontSize: '12px' }} />
+                 <Legend wrapperStyle={{ fontSize: '12px' }} />
+                 <Bar dataKey="count" fill="#8884d8" name="Codes Generated" />
+               </BarChart>
             </div>
           </div>
-          {/* Chart 2 removed */}
+
+          {/* Chart 2: Top Companies Pie Chart */}
+          <div className="p-4 border rounded shadow-sm bg-gray-50">
+            <h4 className="text-lg font-semibold mb-2 text-center text-gray-700">Top Companies</h4>
+            {/* Removed ResponsiveContainer, using fixed dimensions */}
+            <div className="w-full flex justify-center items-center h-64"> {/* Center fixed chart */}
+               <PieChart width={250} height={250}> {/* Fixed dimensions */}
+                 <Pie
+                   data={statsData?.topCompanies ?? []}
+                   cx="50%" cy="50%"
+                   labelLine={false}
+                   outerRadius={80}
+                   fill="#82ca9d" // Changed color slightly
+                   dataKey="count"
+                   nameKey="name"
+                 >
+                   {/* Add Cells for different colors */}
+                   {(statsData?.topCompanies ?? []).map((entry, index) => (
+                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                   ))}
+                 </Pie>
+                 <Tooltip wrapperStyle={{ fontSize: '12px' }} />
+                 <Legend wrapperStyle={{ fontSize: '12px' }} />
+               </PieChart>
+            </div>
+          </div>
           {/* Chart 3 Placeholder */}
           <div className="p-4 border rounded shadow-sm bg-gray-50">
             <h4 className="text-lg font-semibold mb-2 text-center text-gray-700">Popular Attributes (Top 10)</h4>
@@ -134,7 +161,8 @@ const StatisticsPage: React.FC = () => {
             </div>
           </div>
         </div>
-      )}
+      ) /* Add closing parenthesis for the conditional rendering */
+    }
       {/* --- End Charts Section --- */}
     </div>
   );
