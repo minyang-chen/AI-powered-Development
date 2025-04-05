@@ -121,12 +121,46 @@ const ReferralForm: React.FC<ReferralFormProps> = ({
         {/* No error message needed for optional field */}
       </div>
 
+      {/* Discount Percentage */}
+      <div>
+        <label htmlFor="discountPercentage" className="block text-sm font-medium text-gray-600 mb-1">
+          Discount Percentage (%) (Optional)
+        </label>
+        <input
+          id="discountPercentage"
+          type="number"
+          {...register('discountPercentage', {
+            valueAsNumber: true, // Ensure value is treated as a number
+            min: { value: 0, message: 'Discount cannot be negative' },
+            max: { value: 100, message: 'Discount cannot exceed 100' },
+          })}
+          className={`w-full px-4 py-2.5 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent sm:text-base transition duration-150 ease-in-out ${errors.discountPercentage ? 'border-red-500 focus:ring-red-500' : 'border-gray-200'}`}
+          placeholder="e.g., 10"
+        />
+        {errors.discountPercentage && <p className="mt-1 text-xs text-red-600">{errors.discountPercentage.message}</p>}
+      </div>
+
+      {/* Event Description */}
+      <div>
+        <label htmlFor="eventDescription" className="block text-sm font-medium text-gray-600 mb-1">
+          Event Description (Optional)
+        </label>
+        <textarea
+          id="eventDescription"
+          {...register('eventDescription')}
+          rows={3}
+          className="w-full px-4 py-2.5 border border-gray-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent sm:text-base transition duration-150 ease-in-out"
+          placeholder="e.g., Conference sponsorship, Webinar promotion"
+        />
+        {/* No validation needed for optional field */}
+      </div>
+
       {/* Submit Button */}
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-2.5"> {/* Added top margin */}
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex justify-center py-14 px-16 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out"
+          className="flex justify-center py-4 px-6 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition duration-150 ease-in-out"
         >
           {isSubmitting ? 'Submitting...' : 'Generate Code'}
         </button>

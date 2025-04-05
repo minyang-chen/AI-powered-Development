@@ -1,16 +1,12 @@
 import axios from 'axios';
-import type { ReferralFormData, ReferralSuccessResponse, ReferralErrorResponse } from '../types';
+import type { ReferralFormData, ReferralSuccessResponse, ReferralErrorResponse, ReferralRecord, SendEmailPayload, SendEmailResponse, StatisticsResponse } from '../types'; // Added StatisticsResponse
 
-// Define the structure for stored records (should match vite.config.ts simulation)
-export interface StoredReferralRecord extends ReferralFormData {
-  referralCode: string;
-  instructions: string;
-  timestamp: string;
-}
+// Old StoredReferralRecord interface removed
 
 const SUBMIT_ENDPOINT = '/api/referrals';
 const RECORDS_ENDPOINT = '/api/records';
-
+const SEND_EMAIL_ENDPOINT = '/api/sendemail'; // Renamed endpoint
+const STATISTICS_ENDPOINT = '/api/statistics'; // New endpoint
 /**
  * Submits the referral form data to the backend.
  * @param formData The data collected from the referral form.
@@ -39,17 +35,58 @@ export const submitReferral = async (formData: ReferralFormData): Promise<Referr
 };
 
 /**
- * Fetches all stored referral records from the backend simulation.
- * @returns A promise that resolves with an array of stored records.
+ * Fetches all referral records from the backend.
+ * @returns A promise that resolves with an array of referral records.
  */
-export const getReferralRecords = async (): Promise<StoredReferralRecord[]> => {
+export const getReferralRecords = async (): Promise<ReferralRecord[]> => {
   try {
-    const response = await axios.get<StoredReferralRecord[]>(RECORDS_ENDPOINT);
+    // Fetch data matching the ReferralRecord interface
+    const response = await axios.get<ReferralRecord[]>(RECORDS_ENDPOINT);
     return response.data;
   } catch (error) {
     // Handle potential errors during fetching records
     console.error('Error fetching referral records:', error);
     // Depending on requirements, you might want to throw a specific error or return an empty array
     throw { error: 'Failed to fetch records. Please try again.' }; // Or return [];
+  }
+};
+
+/**
+ * Sends the referral code and instructions to a list of emails via the backend.
+ * @param payload Data containing referral code, instructions, and email list.
+ * @returns A promise that resolves with the success message or rejects with an error.
+ */
+export const sendReferralEmail = async (payload: SendEmailPayload): Promise<SendEmailResponse> => {
+  try {
+    const response = await axios.post<SendEmailResponse>(SEND_EMAIL_ENDPOINT, payload); // Uses renamed constant
+    return response.data;
+  } catch (error) {
+    console.error('Error sending referral email:', error);
+    if (axios.isAxiosError(error) && error.response) {
+      // Assuming backend sends { error: string } on failure
+      throw error.response.data as ReferralErrorResponse;
+    } else {
+      throw { error: 'An unexpected error occurred while sending email.' } as ReferralErrorResponse;
+    }
+  }
+};
+
+/**
+ * Fetches calculated statistics data from the backend.
+ * @returns A promise that resolves with the statistics data.
+ */
+export const getStatistics = async (): Promise<StatisticsResponse> => {
+  // Add cache-busting query parameter
+  const cacheBuster = `?t=${Date.now()}`;
+  try {
+    const response = await axios.get<StatisticsResponse>(`${STATISTICS_ENDPOINT}${cacheBuster}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching statistics:', error);
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as ReferralErrorResponse;
+    } else {
+      throw { error: 'An unexpected error occurred while fetching statistics.' } as ReferralErrorResponse;
+    }
   }
 };
