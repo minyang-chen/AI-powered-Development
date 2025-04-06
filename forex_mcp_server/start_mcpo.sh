@@ -1,3 +1,4 @@
 #!/bin/bash
 
-mcpo --config mcp_config.json
+mcpo --config mcp_config.json --port 8007
+
