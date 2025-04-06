@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "stockanalyst": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--with",
+        "mcp[cli]",
+        "--with",
+        "pandas",
+        "--with",
+        "requests",
+        "--with",
+        "tabulate",
+        "uv",
+        "run",
+        "stockanalyst_mcp_tool"
+      ],
+      "capabilities": {
+        "resources": {
+          "subscribe": true,
+          "listChanged": true
+        }
+      }
+    }
+  }
+}

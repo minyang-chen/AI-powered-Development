@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "forex_mcp_server"
+version = "0.1.0"
+description = "MCP Server for Foreign Currency Exchange operations using Alpha Vantage API."
+authors = [
+  { name="Roo", email="roo@example.com" },
+]
+requires-python = ">=3.10" # Updated to match mcp dependency requirement
+dependencies = [
+    "mcp[cli]>=1.6.0",
+    "httpx>=0.27.0",
+    "pydantic>=2.7.0",
+    "python-dotenv>=1.0.0",
+    # pandas, requests, tabulate were installed but might not be directly needed by the server itself
+    # Keep them if other scripts or future features require them.
+]
+
+[project.scripts]
+# This allows running the server using 'forex-mcp-server --module ...' after installation
+forex-mcp-server = "mcp.server:run_server_from_args"
+
+[tool.hatch.build.targets.wheel]
+# Define where the source code lives
+packages = ["src/forex_mcp_server"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+# Optional: Add linters/formatters like Ruff if desired
+# [tool.ruff]
+# ...

@@ -1,0 +1,23 @@
+{
+  "mcpServers": 
+    {
+    "forex": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--with",
+        "mcp[cli]",
+        "--with",
+        "pandas",
+        "--with",
+        "requests",
+        "--with",
+        "tabulate",
+        "mcp",
+        "run",
+        "./forex_mcp_server/src/forex_mcp_server/server.py"
+      ]
+    }
+  }
+  
+}

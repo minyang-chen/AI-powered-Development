@@ -28,8 +28,21 @@ VS Code + Roo Code + Gemini 2.5 Pro
 ### Project Prompt
 [Project Prompt](referral_app/project_prompt.md)
 
+## 4. Foreign Currency Exchange MCP Server(completed)
+[forex_mcp_server](forex_mcp_server)
+### Toolsets
+VS Code + Roo Code + Gemini 2.5 Pro
+### Project Prompt
+[Project Prompt](forex_mcp_server/project_prompt.md)
 
-## 4. OpenAI Agent-SDK UI Web App (pending)
+## 5. Stock Analyst MCP Server(completed)
+[stockanalyst_mcp_server](stockanalyst_mcp_server)
+### Toolsets
+VS Code + Roo Code + Gemini 2.5 Pro
+### Project Prompt
+[Project Prompt](stockanalyst_mcp_server/project_prompt.md)
+
+## 6. OpenAI Agent-SDK UI Web App (pending)
 
 
 
