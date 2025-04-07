@@ -1,0 +1,92 @@
+html, body {
+  height: 100%; /* Ensure full height context */
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: sans-serif;
+  box-sizing: border-box;
+  background-color: #f8f9fa; /* Light background */
+}
+
+#root {
+  display: flex;
+  height: 100%; /* Use percentage height */
+  width: 100vw;
+  overflow: hidden; /* Prevent body scrollbars */
+}
+
+/* Basic layout placeholders - will be refined */
+.sidebar {
+  width: 200px;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.canvas-container {
+  /* flex: 1; */ /* Removed flex sizing */
+  position: relative; /* Needed for React Flow */
+  background-color: #e9ecef;
+  width: calc(100vw - 200px - 300px); /* Calculate width explicitly */
+  height: 100%; /* Explicit height */
+  overflow: hidden; /* Keep overflow hidden */
+}
+
+.config-panel {
+  width: 300px;
+  border-left: 1px solid #ccc;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+  z-index: 10;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+/* React Flow Node Styles */
+.react-flow__node {
+    border-radius: 8px;
+    background: white;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    font-size: 12px;
+    text-align: left;
+    min-width: 180px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.react-flow__node .node-header {
+    font-weight: bold;
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.react-flow__node-agent { border-top: 5px solid #3498db; }
+.react-flow__node-agent .node-header { color: #3498db; }
+.react-flow__node-runner { border-top: 5px solid #e74c3c; }
+.react-flow__node-runner .node-header { color: #e74c3c; }
+.react-flow__node-function_tool { border-top: 5px solid #f39c12; }
+.react-flow__node-function_tool .node-header { color: #f39c12; }
+
+/* Handle styles */
+.react-flow__handle { width: 8px; height: 8px; background-color: #777; border-radius: 50%; }
+.react-flow__handle-top { top: -5px; }
+.react-flow__handle-bottom { bottom: -5px; }
+.react-flow__handle-left { left: -5px; }
+.react-flow__handle-right { right: -5px; }
+
+/* Button style */
+button { padding: 8px 15px; margin-top: 10px; border: none; border-radius: 4px; background-color: #007bff; color: white; cursor: pointer; transition: background-color 0.2s; }
+button:hover { background-color: #0056b3; }
+
+/* Input/Textarea styles */
+input[type="text"], textarea { width: calc(100% - 16px); padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+textarea { min-height: 60px; resize: vertical; }
+label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9em; }
+select { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }

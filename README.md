@@ -42,7 +42,12 @@ VS Code + Roo Code + Gemini 2.5 Pro
 ### Project Prompt
 [Project Prompt](stockanalyst_mcp_server/project_prompt.md)
 
-## 6. OpenAI Agent-SDK UI Web App (pending)
+## 6. OpenAI Agent-SDK UI Web App (complete)
+[openai-visual-workflow](openai-visual-workflow)
+### Toolsets
+VS Code + Roo Code + Gemini 2.5 Pro
+### Project Prompt
+[Project Prompt](openai-visual-workflow/project_prompt.md)
 
 
 
