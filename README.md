@@ -7,35 +7,35 @@ Projects develop using autonomous coding agent workflow
 
 # Projects
 
-## 1. LightRAG MCP Server (completed)
+## 1. LightRAG MCP Server (complete)
 [LightRAG MCP Server](lightRAG_MCP_Server)
 ### Toolsets
 VS Code + Roo Code + Gemini 2.5 Pro
 ### Project Prompt
 [Project Prompt](lightRAG_MCP_Server/project_prompt.md)
 
-## 2. Tariff News MCP Server (completed)
+## 2. Tariff News MCP Server (complete)
 [Tarrif News MCP Server](tariff-news-server)
 ### Toolsets
 VS Code + Roo Code + Gemini 2.5 Pro
 ### Project Prompt
 [Project Prompt](tariff-news-server/project_prompt.md)
 
-## 3. Referral Code Generator (completed)
+## 3. Referral Code Generator (complete)
 [Referral Code generator](referral_app)
 ### Toolsets
 VS Code + Roo Code + Gemini 2.5 Pro
 ### Project Prompt
 [Project Prompt](referral_app/project_prompt.md)
 
-## 4. Foreign Currency Exchange MCP Server(completed)
+## 4. Foreign Currency Exchange MCP Server(complete)
 [forex_mcp_server](forex_mcp_server)
 ### Toolsets
 VS Code + Roo Code + Gemini 2.5 Pro
 ### Project Prompt
 [Project Prompt](forex_mcp_server/project_prompt.md)
 
-## 5. Stock Analyst MCP Server(completed)
+## 5. Stock Analyst MCP Server(complete)
 [stockanalyst_mcp_server](stockanalyst_mcp_server)
 ### Toolsets
 VS Code + Roo Code + Gemini 2.5 Pro
