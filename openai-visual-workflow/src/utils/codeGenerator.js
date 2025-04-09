@@ -16,7 +16,7 @@ const sanitizeName = (name) => {
 export const generatePythonCode = (nodes, edges) => {
     // Initialize code sections and state
     let code = ''; // Final code string
-    let imports = new Set(['from agents import Agent, Runner']); // Start with base imports
+    let imports = new Set(['from agents import Agent, Runner', 'import os']); // Start with base imports + os
     let pydanticModels = ''; // String for Pydantic model definitions (if used)
     let functionDefs = ''; // String for function tool definitions
     let agentDefs = ''; // String for Agent instantiations
@@ -80,8 +80,8 @@ export const generatePythonCode = (nodes, edges) => {
         incomingEdges.forEach(edge => {
             const sourceNode = nodes.find(n => n.id === edge.source);
             // If the source is a function tool, add its sanitized name to the tools list
-            // TODO: Add check for specific target handle ID ('b') if needed
-            if (sourceNode?.type === 'function_tool') {
+            // Check target handle to ensure it connects to the tool input ('b') of the agent
+            if (sourceNode?.type === 'function_tool' && edge.targetHandle === 'b') {
                 tools.push(sanitizeName(sourceNode.data.name || sourceNode.id));
             }
             // TODO: Add logic for Guardrails if implemented
@@ -141,18 +141,18 @@ export const generatePythonCode = (nodes, edges) => {
         // Get context string
         const context = node.data.context;
 
-        // Find connected Agent (Agent -> Runner)
-        // Find the agent connected to this runner's input handle ('agent-input')
-        const incomingEdges = getConnectedEdges([node], edges).filter(edge => edge.target === node.id && edge.targetHandle === 'agent-input');
+        // Find connected Agent (Runner -> Agent)
+        // Find the agent connected FROM this runner's output handle ('agent-output')
+        const outgoingEdges = getConnectedEdges([node], edges).filter(edge => edge.source === node.id && edge.sourceHandle === 'agent-output');
         let connectedAgentVar = null;
         // Should only be one connection, but loop defensively
-        incomingEdges.forEach(edge => {
-             const sourceNode = nodes.find(n => n.id === edge.source);
-             // Check if source is an agent and its variable name is known
-             if (sourceNode?.type === 'agent' && agentVarNames.has(sourceNode.id)) {
-                 // Check if the source handle is appropriate (bottom 'c' or right 'd')
-                 if (edge.sourceHandle === 'c' || edge.sourceHandle === 'd') {
-                    connectedAgentVar = agentVarNames.get(sourceNode.id);
+        outgoingEdges.forEach(edge => {
+             const targetNode = nodes.find(n => n.id === edge.target);
+             // Check if target is an agent and its variable name is known
+             if (targetNode?.type === 'agent' && agentVarNames.has(targetNode.id)) {
+                 // Check if the target handle is appropriate (top 'a')
+                 if (edge.targetHandle === 'a') {
+                    connectedAgentVar = agentVarNames.get(targetNode.id);
                  }
              }
         });
@@ -185,7 +185,7 @@ export const generatePythonCode = (nodes, edges) => {
             }
         } else {
              // Add a comment if the runner is not properly connected
-             runnerCode += `# WARNING: Runner node '${node.data.name || node.id}' is not connected to a valid Agent output.\n\n`;
+             runnerCode += `# WARNING: Runner node '${node.data.name || node.id}' is not connected TO a valid Agent input.\n\n`;
         }
     });
 
@@ -193,6 +193,16 @@ export const generatePythonCode = (nodes, edges) => {
     // Assemble the final code string in order
     // Imports
     code += Array.from(imports).sort().join('\n') + '\n\n'; // Sort imports
+
+    // Add API Key Placeholder
+    code += "# --- API Key Configuration ---\n";
+    code += "# IMPORTANT: Replace \"YOUR_API_KEY_HERE\" with your actual OpenAI API key\n";
+    code += "# or set the OPENAI_API_KEY environment variable before running.\n";
+    code += 'api_key = os.environ.get("OPENAI_API_KEY", "YOUR_API_KEY_HERE")\n';
+    code += 'if api_key == "YOUR_API_KEY_HERE":\n';
+    code += '    print("\\nWarning: OPENAI_API_KEY not set. Using placeholder value.\\n")\n';
+    code += "# ---------------------------\n\n";
+
     // Pydantic Models (if any)
     if (pydanticModels) {
         code += "# --- Pydantic Model Definitions (if used) ---\n";

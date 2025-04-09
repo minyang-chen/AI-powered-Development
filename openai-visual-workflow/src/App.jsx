@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react'; // Import useEffect
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import ReactFlow, { // Import React Flow components and hooks
   // ReactFlowProvider removed, it's in main.jsx
   addEdge,
@@ -22,6 +23,7 @@ import RunnerNode from './components/nodes/RunnerNode';
 import FunctionToolNode from './components/nodes/FunctionToolNode';
 import CodeModal from './components/CodeModal';
 import { generatePythonCode } from './utils/codeGenerator';
+import { getTemplate } from './utils/templateData'; // Import template loader
 
 // Initial state for nodes (starts empty)
 const initialNodes = [];
@@ -48,7 +50,18 @@ function App() {
   const [generatedCode, setGeneratedCode] = useState(null);
   // State to control the visibility of the code generation modal
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { screenToFlowPosition } = useReactFlow(); // Hook works here because Provider is in main.jsx
+  const reactFlowInstance = useReactFlow(); // Get instance for fitView
+  const { screenToFlowPosition } = reactFlowInstance; // Destructure screenToFlowPosition
+  const navigate = useNavigate(); // Hook for navigation
+  const [loggedInUser, setLoggedInUser] = useState(''); // State for username
+
+  // Effect to get username from localStorage on mount
+  useEffect(() => {
+    const user = localStorage.getItem('loggedInUser');
+    if (user) {
+      setLoggedInUser(user);
+    }
+  }, []); // Empty dependency array means run once on mount
 
   // Callback function for handling new connections (edges)
   const onConnect = useCallback(
@@ -163,11 +176,41 @@ function App() {
      setSelectedNode(prev => prev && prev.id === nodeId ? {...prev, data: {...prev.data, ...newData}} : prev);
   }, [setNodes]); // Dependency: setNodes function
 
+  // Callback function for handling logout
+  const handleLogout = useCallback(() => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('loggedInUser');
+    navigate('/'); // Redirect to landing page
+  }, [navigate]); // Dependency: navigate function
+
+  // Callback function for loading a template
+  const handleLoadTemplate = useCallback((templateKey) => {
+    const template = getTemplate(templateKey);
+    if (!template) {
+      console.error(`Template not found: ${templateKey}`);
+      return;
+    }
+
+    // Clear existing nodes and edges
+    setNodes([]);
+    setEdges([]);
+
+    // Use setTimeout to allow state to clear before setting new nodes/edges and fitting view
+    // This helps prevent potential race conditions with React Flow's internal state updates
+    setTimeout(() => {
+      setNodes(template.nodes);
+      setEdges(template.edges);
+      // Fit view to the loaded template
+      reactFlowInstance.fitView({ padding: 0.1 }); // Add some padding
+    }, 0);
+
+  }, [setNodes, setEdges, reactFlowInstance]); // Dependencies
+
   return (
       <> {/* Fragment for multiple top-level elements */}
         <div style={{ display: 'flex', height: '100%' }}> {/* Main layout container */}
           {/* Left Sidebar Component */}
-          <Sidebar onGenerateCode={handleGenerateCode} />
+          <Sidebar onGenerateCode={handleGenerateCode} onLogout={handleLogout} username={loggedInUser} onLoadTemplate={handleLoadTemplate} /> {/* Pass username and template loader */}
 
           {/* Canvas container using flex: 1 from CSS */}
           {/* Center Canvas Area */}

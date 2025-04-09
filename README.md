@@ -21,28 +21,21 @@ VS Code + Roo Code + Gemini 2.5 Pro
 ### Project Prompt
 [Project Prompt](tariff-news-server/project_prompt.md)
 
-## 3. Referral Code Generator
-[Referral Code generator](referral_app)
-### Toolsets
-VS Code + Roo Code + Gemini 2.5 Pro
-### Project Prompt
-[Project Prompt](referral_app/project_prompt.md)
-
-## 4. Foreign Currency Exchange MCP Server
+## 3. Foreign Currency Exchange MCP Server
 [forex_mcp_server](forex_mcp_server)
 ### Toolsets
 VS Code + Roo Code + Gemini 2.5 Pro
 ### Project Prompt
 [Project Prompt](forex_mcp_server/project_prompt.md)
 
-## 5. Stock Analyst MCP Server
+## 4. Stock Analyst MCP Server
 [stockanalyst_mcp_server](stockanalyst_mcp_server)
 ### Toolsets
 VS Code + Roo Code + Gemini 2.5 Pro
 ### Project Prompt
 [Project Prompt](stockanalyst_mcp_server/project_prompt.md)
 
-## 6. OpenAI Agent-SDK UI Web App
+## 5. OpenAI Agent Visual Workflow Designer 
 [openai-visual-workflow](openai-visual-workflow)
 ### Toolsets
 VS Code + Roo Code + Gemini 2.5 Pro

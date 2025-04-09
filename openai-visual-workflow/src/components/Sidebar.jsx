@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useRef } from 'react'; // Import useState and useRef
+import { agentTemplates } from '../utils/templateData'; // Import templates
 
 // Function to handle the start of a drag event from the sidebar items
 const onDragStart = (event, nodeType, nodeName) => {
@@ -11,10 +12,50 @@ const onDragStart = (event, nodeType, nodeName) => {
 };
 
 // Sidebar component displaying draggable node types and the generate code button
-const Sidebar = ({ onGenerateCode }) => { // Receives callback for code generation
+const Sidebar = ({ onGenerateCode, onLogout, username, onLoadTemplate }) => { // Add onLoadTemplate prop
+  const [isHelpVisible, setIsHelpVisible] = useState(false); // State for help visibility
+  const templateSelectRef = useRef(null); // Ref for the select dropdown
+
+  const handleTemplateChange = (event) => {
+    const templateKey = event.target.value;
+    if (templateKey && onLoadTemplate) {
+      onLoadTemplate(templateKey);
+      // Reset dropdown after loading
+      if (templateSelectRef.current) {
+        templateSelectRef.current.value = "";
+      }
+    }
+  };
+
   return (
     <aside className="sidebar">
       <h3>Components</h3>
+      {/* Display logged-in user */}
+      {username && (
+        <div style={{ padding: '10px 0', borderBottom: '1px solid #eee', marginBottom: '15px', fontSize: '0.9em', color: '#333' }}>
+          Logged in as: <strong>{username}</strong>
+        </div>
+      )}
+
+      {/* Template Loader Section */}
+      <div style={{ padding: '10px 0', borderBottom: '1px solid #eee', marginBottom: '15px' }}>
+        <label htmlFor="template-select" style={{ display: 'block', marginBottom: '5px', fontSize: '0.9em', color: '#333' }}>Load Template:</label>
+        <select
+          id="template-select"
+          ref={templateSelectRef}
+          onChange={handleTemplateChange}
+          style={{ width: '100%', padding: '8px', fontSize: '0.9em', marginBottom: '10px' }}
+          defaultValue="" // Ensure default is selected initially
+        >
+          <option value="" disabled>-- Select Template --</option>
+          {Object.entries(agentTemplates).map(([key, template]) => (
+            <option key={key} value={key}>
+              {template.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <p style={{ fontSize: '0.8em', color: '#666', marginBottom: '15px' }}>Drag nodes to the canvas</p>
 
       {/* Draggable Agent Node representation */}
@@ -61,6 +102,38 @@ const Sidebar = ({ onGenerateCode }) => { // Receives callback for code generati
       {/* Button to trigger code generation */}
       <button onClick={onGenerateCode} style={{ width: '100%', marginTop: '20px' }}>
         Generate Code
+      </button>
+
+      {/* Help Section */}
+      <div style={{ marginTop: '20px', borderTop: '1px solid #eee', paddingTop: '10px' }}>
+        <button
+          onClick={() => setIsHelpVisible(!isHelpVisible)}
+          style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', padding: '5px 0', fontSize: '0.9em', color: '#007bff', marginBottom: '5px' }}
+        >
+          {isHelpVisible ? '▼ Hide Help' : '► Show Help'}
+        </button>
+
+        {/* Collapsible Help Content */}
+        {isHelpVisible && (
+          <div style={{ padding: '10px', marginTop: '5px', border: '1px solid #eee', borderRadius: '4px', fontSize: '0.85em', textAlign: 'left', backgroundColor: '#f9f9f9' }}>
+            <h4>Quick Reference</h4>
+            <ul style={{ margin: 0, paddingLeft: '20px' }}>
+              {/* Added Template Instruction */}
+              <li><strong>Load Template:</strong> Select a pattern from the dropdown above to load a pre-built workflow (clears current canvas).</li>
+              <li><strong>Add Nodes:</strong> Drag from sidebar to canvas.</li>
+              <li><strong>Connect Nodes:</strong> Drag between node handles (circles).</li>
+              <li><strong>Configure:</strong> Click node, use right panel.</li>
+              <li><strong>Generate Code:</strong> Click 'Generate Code' button above.</li>
+              <li><strong>Navigate:</strong> Zoom with wheel, pan by dragging background.</li>
+              <li><strong>Logout:</strong> Click 'Logout' button below.</li>
+            </ul>
+          </div>
+        )}
+      </div>
+
+      {/* Button to trigger logout */}
+      <button onClick={onLogout} style={{ width: '100%', marginTop: '10px', backgroundColor: '#f44336', color: 'white' }}>
+        Logout
       </button>
     </aside>
   );

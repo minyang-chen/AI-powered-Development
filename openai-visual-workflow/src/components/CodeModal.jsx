@@ -1,4 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react'; // Added useEffect
+import CodeMirror from '@uiw/react-codemirror';
+import { python } from '@codemirror/lang-python';
+import { okaidia } from '@uiw/codemirror-theme-okaidia'; // Or your chosen theme
 
 // Inline styles for the modal overlay (background dimming)
 const modalOverlayStyle = {
@@ -27,20 +30,6 @@ const modalContentStyle = {
   flexDirection: 'column', // Stack elements vertically
 };
 
-// Inline styles for the <pre> tag containing the code
-const preStyle = {
-  backgroundColor: '#f8f9fa', // Light background for code block
-  border: '1px solid #dee2e6', // Subtle border
-  borderRadius: '4px', // Rounded corners
-  padding: '15px', // Padding around the code
-  overflow: 'auto', // Enable horizontal and vertical scrolling if code overflows
-  flexGrow: 1, // Allow the code block to fill available vertical space
-  fontFamily: 'monospace', // Use a monospace font for code
-  fontSize: '0.9em', // Slightly smaller font size
-  whiteSpace: 'pre', // Preserve whitespace and line breaks from the code string
-  maxHeight: 'calc(80vh - 150px)', // Limit height to prevent overly tall modals (adjust 150px based on header/button height)
-};
-
 // Inline styles for the container holding the modal buttons
 const buttonContainerStyle = {
   display: 'flex', // Use flexbox for button alignment
@@ -59,29 +48,40 @@ const buttonStyle = {
 
 // Modal component to display generated code
 const CodeModal = ({ code, onClose }) => { // Receives generated code string and close callback
-  // State to manage the text displayed on the copy button ("Copy", "Copied!", "Failed!")
+  const [editableCode, setEditableCode] = useState(code); // State for editor content
   const [copyStatus, setCopyStatus] = useState('Copy');
+
+  // Update editableCode if the incoming code prop changes (e.g., re-generating)
+  useEffect(() => {
+    setEditableCode(code);
+    setCopyStatus('Copy'); // Reset copy status when code changes
+  }, [code]);
+
+  // Callback for editor changes
+  const onEditorChange = useCallback((value, viewUpdate) => {
+    setEditableCode(value);
+    // Reset copy status if user edits the code
+    if (copyStatus !== 'Copy') {
+        setCopyStatus('Copy');
+    }
+  }, [copyStatus]); // Include copyStatus dependency
 
   // Callback function to handle copying the code to the clipboard
   const handleCopy = useCallback(async () => {
     try {
-      // Use the modern navigator.clipboard API
-      await navigator.clipboard.writeText(code);
-      // Update button text to show success
+      // Use the modern navigator.clipboard API with the current editor content
+      await navigator.clipboard.writeText(editableCode);
       setCopyStatus('Copied!');
-      // Reset button text after a short delay
       setTimeout(() => setCopyStatus('Copy'), 2000);
     } catch (err) {
-      // Handle potential errors during copy (e.g., permissions)
       console.error('Failed to copy code: ', err);
-      // Update button text to show failure
       setCopyStatus('Failed!');
-      // Reset button text after a short delay
       setTimeout(() => setCopyStatus('Copy'), 2000);
     }
-  }, [code]); // Dependency: re-create callback if the 'code' prop changes
+  }, [editableCode]); // Dependency: use current editor content
 
   // If no code is provided (e.g., initially), don't render the modal
+  // Note: We check the original 'code' prop, not 'editableCode'
   if (!code) return null;
 
   return (
@@ -90,11 +90,30 @@ const CodeModal = ({ code, onClose }) => { // Receives generated code string and
       {/* Content area prevents click propagation to overlay */}
       <div style={modalContentStyle} onClick={(e) => e.stopPropagation()}>
         <h3>Generated Python Code</h3>
-        {/* Code display area */}
-        <pre style={preStyle}>
-          <code>{code}</code> {/* Display the code string */}
-        </pre>
+        {/* CodeMirror Editor */}
+        <CodeMirror
+          value={editableCode}
+          height="400px" // Adjust height as needed
+          theme={okaidia} // Apply theme
+          extensions={[python()]} // Apply Python language support
+          onChange={onEditorChange}
+          basicSetup={{ // Optional: configure basic features
+            lineNumbers: true,
+            foldGutter: true,
+            highlightActiveLine: true,
+            // Add other setup options if desired
+          }}
+          style={{ border: '1px solid #dee2e6', borderRadius: '4px', flexGrow: 1, overflow: 'hidden' }} // Added style for border and flex grow
+        />
         <div style={buttonContainerStyle}>
+          {/* Optional Reset Button */}
+          <button
+            onClick={() => setEditableCode(code)} // Reset to original code prop
+            style={{ ...buttonStyle, backgroundColor: '#ffc107', color: 'black', marginRight: 'auto' }} // Align left
+            disabled={editableCode === code} // Disable if not edited
+          >
+            Reset
+          </button>
           {/* Copy button */}
           <button
             onClick={handleCopy} // Trigger copy handler
