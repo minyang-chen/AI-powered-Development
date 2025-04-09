@@ -2,6 +2,12 @@
 
 This project provides a web-based visual editor for designing OpenAI Agent workflows. Users can drag and drop components representing Agents, Runners, and Function Tools onto a canvas, configure their properties, connect them to define relationships (like handoffs or tool usage), and generate the corresponding Python code using the `openai-agents` SDK.
 
+![openai agent visual designer Home](screenshots/final/visual_agent_designer_home_page.png "openai agent visual designer Home")
+
+![openai agent visual designer](screenshots/final/visual_agent_designer_canvas_template_page.png "openai agent visual designer")
+
+![openai agent code generation](screenshots/final/visual_agent_designer_code_editor_page.png "openai agent code genertion")
+
 ## Features
 
 - **Visual Workflow Design:** Drag-and-drop interface for building agent workflows.
