@@ -40,5 +40,5 @@ VS Code + Roo Code + Gemini 2.5 Pro
 ### Toolsets
 VS Code + Roo Code + Gemini 2.5 Pro
 ### Project Prompt
-[Project Prompt](openai-visual-workflow/project_prompt.md)
+[Project Prompt](openai-visual-workflow/PROJECT_PROMPT.md)
 
