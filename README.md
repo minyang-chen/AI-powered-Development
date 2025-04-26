@@ -42,3 +42,11 @@ VS Code + Roo Code + Gemini 2.5 Pro
 ### Project Prompt
 [Project Prompt](openai-visual-workflow/PROJECT_PROMPT.md)
 
+## 6. AWS Developer Q News Subscriber Web App 
+
+### Toolsets
+AWS developer Q CLI + Anthropic Sonet 3.7
+### Project Prompt
+[Project Prompt](news_sub_app/README.md)
+
+
