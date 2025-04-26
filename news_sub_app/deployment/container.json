@@ -1,0 +1,31 @@
+{
+    "containers": {
+        "amazon-q-news-subscription": {
+            "image": ".",
+            "ports": {
+                "3000": "HTTP"
+            },
+            "environment": {
+                "APP_URL": "https://https://amazon-q-news.7fpg3m5pbeyrt.us-east-1.cs.amazonlightsail.com/",
+                "DATA_STORAGE_DIR": "./data",
+                "SUBSCRIBERS_FILE": "subscribers.json",
+                "BACKUP_DIR": "./data/backups",
+                "EMAIL_SIMULATOR_DIR": "./data/emails",
+                "S3_EMULATION_ENABLED": "true",
+                "S3_EMULATION_DIR": "./data/s3"
+            }
+        }
+    },
+    "publicEndpoint": {
+        "containerName": "amazon-q-news-subscription",
+        "containerPort": 3000,
+        "healthCheck": {
+            "healthyThreshold": 2,
+            "unhealthyThreshold": 2,
+            "timeoutSeconds": 5,
+            "intervalSeconds": 10,
+            "path": "/",
+            "successCodes": "200-499"
+        }
+    }
+}

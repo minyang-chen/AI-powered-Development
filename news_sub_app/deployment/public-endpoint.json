@@ -1,0 +1,12 @@
+{
+  "containerName": "amazon-q-news-subscription",
+  "containerPort": 3000,
+  "healthCheck": {
+    "healthyThreshold": 2,
+    "unhealthyThreshold": 2,
+    "timeoutSeconds": 5,
+    "intervalSeconds": 10,
+    "path": "/",
+    "successCodes": "200-499"
+  }
+}
